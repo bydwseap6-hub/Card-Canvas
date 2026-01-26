@@ -693,7 +693,7 @@
     </div>
   </div>
 
-  <script>
+  <!-- <script>
     let currentTemplate = 'conventional';
 
     function limitQuantity() {
@@ -862,6 +862,267 @@
         btn.classList.remove('downloading');
         
         if (confirm('PDF generation encountered an issue. Would you like to print the card instead?\n\nYou can save as PDF from the print dialog.')) {
+          window.print();
+        }
+      }
+    }
+
+    function clearForm() {
+      if (confirm('Are you sure you want to clear all fields?')) {
+        document.getElementById('name').value = '';
+        document.getElementById('designation1').value = '';
+        document.getElementById('designation2').value = '';
+        document.getElementById('address').value = '';
+        document.getElementById('phone').value = '';
+        document.getElementById('mobile').value = '';
+        document.getElementById('uan').value = '';
+        document.getElementById('emailUsername').value = '';
+        document.getElementById('branchDept').value = '';
+        document.getElementById('branchCode').value = '';
+        document.getElementById('crcCode').value = '';
+        document.getElementById('quantity').value = '200';
+        document.getElementById('requestedBy').value = '';
+        document.getElementById('requestedDesignation').value = '';
+        document.getElementById('approvedBy').value = '';
+        document.getElementById('approvedDesignation').value = '';
+        updateCard();
+      }
+    }
+
+    function copyToClipboard() {
+      const cardType = currentTemplate === 'conventional' ? 'UBL Conventional' : 'UBL Ameen Islamic';
+      const name = document.getElementById('name').value;
+      const desig1 = document.getElementById('designation1').value;
+      const desig2 = document.getElementById('designation2').value;
+      const address = document.getElementById('address').value;
+      const phone = document.getElementById('phone').value;
+      const mobile = document.getElementById('mobile').value;
+      const uan = document.getElementById('uan').value;
+      const emailUsername = document.getElementById('emailUsername').value;
+      const email = emailUsername ? emailUsername + '@ubl.com.pk' : '';
+
+      const text = `
+${cardType} Business Card
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Name: ${name}
+Designation: ${desig1}${desig2 ? '\n' + desig2 : ''}
+Company: ${currentTemplate === 'conventional' ? 'United Bank Limited' : 'UBL Ameen'}
+Address: ${address}
+${phone ? 'Phone: ' + phone : ''}
+${mobile ? 'Mobile: ' + mobile : ''}
+${uan ? 'UAN: ' + uan : ''}
+Email: ${email}
+Website: www.ubl.com.pk
+      `.trim();
+
+      navigator.clipboard.writeText(text).then(() => {
+        alert('Card information copied to clipboard!');
+      }).catch(() => {
+        alert('Failed to copy. Please try again.');
+      });
+    }
+
+    // Initialize on page load
+    updateCard();
+  </script> -->
+<script>
+    let currentTemplate = 'conventional';
+
+    function limitQuantity() {
+      const quantityInput = document.getElementById('quantity');
+      let value = parseInt(quantityInput.value);
+      
+      if (value > 200) {
+        quantityInput.value = 200;
+      } else if (value < 1) {
+        quantityInput.value = 1;
+      }
+      
+      updateCard();
+    }
+
+    function updateEmail() {
+      updateCard();
+    }
+
+    function switchTemplate() {
+      const cardType = document.getElementById('cardType').value;
+      currentTemplate = cardType;
+      
+      const convCard = document.getElementById('conventionalCard');
+      const islCard = document.getElementById('islamicCard');
+      
+      if (cardType === 'conventional') {
+        convCard.style.display = 'block';
+        islCard.style.display = 'none';
+      } else {
+        convCard.style.display = 'none';
+        islCard.style.display = 'block';
+      }
+      
+      updateCard();
+    }
+
+    function updateCard() {
+      const name = document.getElementById('name').value;
+      const desig1 = document.getElementById('designation1').value;
+      const desig2 = document.getElementById('designation2').value;
+      const address = document.getElementById('address').value.replace(/\n/g, '<br>');
+      const phone = document.getElementById('phone').value;
+      const mobile = document.getElementById('mobile').value;
+      const uan = document.getElementById('uan').value;
+      const emailUsername = document.getElementById('emailUsername').value;
+      const email = emailUsername ? emailUsername + '@ubl.com.pk' : '';
+
+      // Update card preview
+      if (currentTemplate === 'conventional') {
+        document.getElementById('conv-name').textContent = name || 'Abdul Wahid';
+        document.getElementById('conv-desig1').textContent = desig1 || 'General Procurement';
+        document.getElementById('conv-desig2').textContent = desig2 || 'Centralized Procurement & Administration';
+        document.getElementById('conv-desig2').style.display = desig2 ? 'block' : 'block';
+        document.getElementById('conv-address').innerHTML = address || '5th Floor, Head Office, Slico Building # 01<br>I.I. Chundrigar Road, Karachi - Pakistan';
+        document.getElementById('conv-phone').textContent = phone || '+92 (21) 99033-0000';
+        document.getElementById('conv-mobile').textContent = mobile || '+92 (333) 0000000';
+        document.getElementById('conv-uan').textContent = uan || '+92 (21) 111-825-888 Ext: 12000';
+        document.getElementById('conv-email').textContent = email || 'your.name@ubl.com.pk';
+      } else {
+        document.getElementById('isl-name').textContent = name || 'Abdul Wahid';
+        document.getElementById('isl-desig1').textContent = desig1 || 'Branch Operations Manager';
+        document.getElementById('isl-desig2').textContent = desig2;
+        document.getElementById('isl-desig2').style.display = desig2 ? 'block' : 'none';
+        document.getElementById('isl-address-right').innerHTML = address || 'Kaneez Fatima Society Branch (2426)<br>Karachi - Pakistan';
+        document.getElementById('isl-phone').textContent = phone || '+92 (31)';
+        document.getElementById('isl-mobile').textContent = mobile || '+92 300 0000000';
+        document.getElementById('isl-email').textContent = email || 'your.name@ubl.com.pk';
+      }
+
+      // Update order information display
+      const branchDept = document.getElementById('branchDept').value;
+      const branchCode = document.getElementById('branchCode').value;
+      const crcCode = document.getElementById('crcCode').value;
+      const quantity = document.getElementById('quantity').value;
+      const requestedBy = document.getElementById('requestedBy').value;
+      const requestedDesig = document.getElementById('requestedDesignation').value;
+      const approvedBy = document.getElementById('approvedBy').value;
+      const approvedDesig = document.getElementById('approvedDesignation').value;
+
+      document.getElementById('display-branchDept').textContent = branchDept || '__________________';
+      document.getElementById('display-branchCode').textContent = branchCode || '__________';
+      document.getElementById('display-crcCode').textContent = crcCode || '_________________';
+      document.getElementById('display-quantity').textContent = quantity ? quantity + ' Cards' : '200 Cards';
+      
+      // Calculate total amount (Rs. 4.35 per card)
+      const totalAmount = (parseFloat(quantity) || 200) * 4.35;
+      document.getElementById('display-totalAmount').textContent = totalAmount.toFixed(2);
+
+      document.getElementById('display-requestedBy').textContent = requestedBy || '_____________________';
+      document.getElementById('display-requestedDesig').textContent = requestedDesig || '_____________________';
+      document.getElementById('display-approvedBy').textContent = approvedBy || '_____________________';
+      document.getElementById('display-approvedDesig').textContent = approvedDesig || '_____________________';
+
+      // Update date boxes with current date
+      const today = new Date();
+      const day = String(today.getDate()).padStart(2, '0');
+      const month = String(today.getMonth() + 1).padStart(2, '0');
+      const year = String(today.getFullYear()).slice(-2);
+
+      document.getElementById('date-d1').textContent = day[0];
+      document.getElementById('date-d2').textContent = day[1];
+      document.getElementById('date-m1').textContent = month[0];
+      document.getElementById('date-m2').textContent = month[1];
+      document.getElementById('date-y1').textContent = year[0];
+      document.getElementById('date-y2').textContent = year[1];
+    }
+
+    function downloadCard() {
+      const btn = document.getElementById('downloadBtn');
+      btn.disabled = true;
+      btn.classList.add('downloading');
+      
+      const cardElement = currentTemplate === 'conventional' 
+        ? document.getElementById('conventionalCard')
+        : document.getElementById('islamicCard');
+      
+      const orderElement = document.getElementById('orderInfo');
+      
+      const cardName = document.getElementById('name').value || 'BusinessCard';
+      const fileName = `${cardName.replace(/\s+/g, '_')}_${currentTemplate}_UBL.pdf`;
+
+      setTimeout(() => {
+        // Capture card first
+        html2canvas(cardElement, {
+          scale: 3,
+          useCORS: false,
+          allowTaint: true,
+          backgroundColor: '#ffffff',
+          width: cardElement.offsetWidth,
+          height: cardElement.offsetHeight,
+          logging: false,
+          imageTimeout: 0,
+          removeContainer: true
+        }).then(cardCanvas => {
+          // Then capture order info
+          html2canvas(orderElement, {
+            scale: 2,
+            useCORS: false,
+            allowTaint: true,
+            backgroundColor: '#ffffff',
+            logging: false,
+            imageTimeout: 0,
+            removeContainer: true
+          }).then(orderCanvas => {
+            try {
+              const cardImgData = cardCanvas.toDataURL('image/png', 1.0);
+              const orderImgData = orderCanvas.toDataURL('image/png', 1.0);
+              
+              const { jsPDF } = window.jspdf;
+              
+              // Create PDF with A4 size
+              const pdf = new jsPDF({
+                orientation: 'portrait',
+                unit: 'mm',
+                format: 'a4'
+              });
+              
+              // Add card at the top (centered)
+              const cardWidth = 88.9;
+              const cardHeight = 50.8;
+              const pageWidth = pdf.internal.pageSize.getWidth();
+              const cardX = (pageWidth - cardWidth) / 2;
+              
+              pdf.addImage(cardImgData, 'PNG', cardX, 20, cardWidth, cardHeight);
+              
+              // Add order info below the card
+              const orderWidth = pageWidth - 20; // 10mm margin on each side
+              const orderHeight = (orderCanvas.height / orderCanvas.width) * orderWidth;
+              
+              pdf.addImage(orderImgData, 'PNG', 10, 80, orderWidth, orderHeight);
+              
+              pdf.save(fileName);
+              
+              btn.disabled = false;
+              btn.classList.remove('downloading');
+              
+              alert('✅ PDF downloaded successfully!');
+            } catch (pdfError) {
+              console.error('PDF creation error:', pdfError);
+              fallbackDownload();
+            }
+          }).catch(error => {
+            console.error('Order info canvas error:', error);
+            fallbackDownload();
+          });
+        }).catch(error => {
+          console.error('Card canvas error:', error);
+          fallbackDownload();
+        });
+      }, 500);
+
+      function fallbackDownload() {
+        btn.disabled = false;
+        btn.classList.remove('downloading');
+        
+        if (confirm('PDF generation encountered an issue. Would you like to print the page instead?\n\nYou can save as PDF from the print dialog.')) {
           window.print();
         }
       }
