@@ -462,7 +462,7 @@
 
       <div class="form-group">
         <label for="mobile">Mobile</label>
-        <input type="text" id="mobile" placeholder="+92 (333) 0000000" oninput="updateCard()">
+        <input type="text" id="mobile" maxlength="13" placeholder="+92 (333) 0000000" oninput="updateCard()">
       </div>
 
       <div class="form-group">
@@ -483,8 +483,13 @@
       <h3 style="color: #0066b2; margin-bottom: 15px;">Order Information</h3>
 
       <div class="form-group">
-        <label for="branchDept">Branch / Department</label>
+        <label for="branchDept">Branch / Department Name</label>
         <input type="text" id="branchDept" placeholder="Enter branch or department" oninput="updateCard()">
+      </div>
+      
+      <div class="form-group">
+        <label for="groupname">Group Name</label>
+        <input type="text" id="groupname" placeholder="Enter Group Name" oninput="updateCard()">
       </div>
 
       <div class="form-group">
@@ -627,6 +632,15 @@
             <label>Branch / Dept.</label>
             <span class="value" id="display-branchDept">__________________</span>
           </div>
+           <div class="order-field">
+            <label>Group name.</label>
+            <span class="value" id="display-groupname">__________________</span>
+          </div>
+
+        </div>
+
+                <div class="order-row">
+
           <div class="order-field">
             <label>Branch Code (Mandatory)</label>
             <span class="value" id="display-branchCode">__________</span>
@@ -643,7 +657,6 @@
             </div>
           </div>
         </div>
-
         <div class="order-row">
           <div class="order-field">
             <label>CRC Code (Mandatory)</label>
@@ -741,6 +754,7 @@
       }
 
       const branchDept = document.getElementById('branchDept').value;
+      const groupname = document.getElementById('groupname').value;
       const branchCode = document.getElementById('branchCode').value;
       const crcCode = document.getElementById('crcCode').value;
       const quantity = document.getElementById('quantity').value;
@@ -750,6 +764,7 @@
       const approvedDesig = document.getElementById('approvedDesignation').value;
 
       document.getElementById('display-branchDept').textContent = branchDept || '__________________';
+      document.getElementById('display-groupname').textContent = groupname || '__________________';
       document.getElementById('display-branchCode').textContent = branchCode || '__________';
       document.getElementById('display-crcCode').textContent = crcCode || '_________________';
       document.getElementById('display-quantity').textContent = quantity ? quantity + ' Cards' : '200 Cards';
@@ -875,6 +890,7 @@
         document.getElementById('uan').value = '';
         document.getElementById('emailUsername').value = '';
         document.getElementById('branchDept').value = '';
+        document.getElementById('groupname').value = '';
         document.getElementById('branchCode').value = '';
         document.getElementById('crcCode').value = '';
         document.getElementById('quantity').value = '200';
