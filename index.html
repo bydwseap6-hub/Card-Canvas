@@ -16,6 +16,7 @@
       padding: 20px;
       background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      min-height: 100vh;
     }
 
     .container {
@@ -53,6 +54,7 @@
 
     .form-group {
       margin-bottom: 18px;
+      position: relative;
     }
 
     .form-group label {
@@ -89,6 +91,12 @@
       box-shadow: 0 0 0 3px rgba(0, 102, 178, 0.1);
     }
 
+    .form-group input.valid,
+    .form-group textarea.valid,
+    .form-group select.valid {
+      border-color: #28a745;
+    }
+
     .form-group textarea {
       resize: vertical;
       min-height: 70px;
@@ -116,6 +124,10 @@
       box-shadow: 0 0 0 3px rgba(0, 102, 178, 0.1);
     }
 
+    .email-input-group.valid {
+      border-color: #28a745;
+    }
+
     .email-input-group input {
       border: none;
       padding: 12px 14px;
@@ -131,6 +143,18 @@
       color: #0066b2;
       white-space: nowrap;
       font-size: 14px;
+    }
+
+    .input-hint {
+      font-size: 11px;
+      color: #666;
+      margin-top: 4px;
+      display: block;
+    }
+
+    .input-hint.success {
+      color: #28a745;
+      font-weight: 600;
     }
 
     .button-group {
@@ -154,7 +178,7 @@
       gap: 8px;
     }
 
-    button:active {
+    button:active:not(:disabled) {
       transform: translateY(1px);
     }
 
@@ -181,7 +205,7 @@
     }
 
     .btn-download:disabled {
-      background: #6c757d;
+      background: linear-gradient(135deg, #6c757d 0%, #5a6268 100%);
       cursor: not-allowed;
       opacity: 0.6;
     }
@@ -465,6 +489,45 @@
       margin: 4px 0;
     }
 
+    .validation-summary {
+      margin-top: 15px;
+      padding: 15px;
+      background: #fff3cd;
+      border-left: 4px solid #ffc107;
+      border-radius: 6px;
+      display: none;
+      animation: slideDown 0.3s ease-out;
+    }
+
+    .validation-summary.show {
+      display: block;
+    }
+
+    .validation-summary h4 {
+      margin: 0 0 10px 0;
+      color: #856404;
+      font-size: 14px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .validation-summary h4::before {
+      content: '⚠️';
+      font-size: 18px;
+    }
+
+    .validation-summary ul {
+      margin: 0;
+      padding-left: 20px;
+      color: #856404;
+      font-size: 13px;
+    }
+
+    .validation-summary li {
+      margin: 4px 0;
+    }
+
     .order-info {
       margin-top: 25px;
       padding: 25px;
@@ -477,7 +540,7 @@
     .order-info-header {
       background: #f8f9fa;
       padding: 15px;
-      border: 4px solid #b20029;;
+      border: 4px solid #b20029;
       border-radius: 6px;
       margin-bottom: 20px;
       font-size: 11px;
@@ -486,7 +549,6 @@
     }
 
     .order-info-header strong {
-      display: block;
       font-size: 13px;
       color: #0066b2;
       margin-bottom: 10px;
@@ -589,8 +651,24 @@
     }
 
     .char-counter.warning {
-      color: #e74c3c;
-      font-weight: bold;
+      color: #ff9800;
+      font-weight: 600;
+    }
+
+    .char-counter.success {
+      color: #28a745;
+      font-weight: 600;
+    }
+
+    @keyframes slideDown {
+      from {
+        opacity: 0;
+        transform: translateY(-10px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
     }
 
     @media print {
@@ -622,8 +700,17 @@
     }
 
     @media (max-width: 768px) {
+      body {
+        padding: 10px;
+      }
+
       .container {
         flex-direction: column;
+        gap: 20px;
+      }
+
+      .form-section {
+        padding: 20px;
       }
 
       .form-row {
@@ -638,6 +725,45 @@
         flex-direction: column;
         gap: 20px;
       }
+
+      .card-wrapper {
+        padding: 20px;
+      }
+    }
+
+    @keyframes slideIn {
+      from {
+        transform: translateX(400px);
+        opacity: 0;
+      }
+      to {
+        transform: translateX(0);
+        opacity: 1;
+      }
+    }
+
+    @keyframes slideOut {
+      from {
+        transform: translateX(0);
+        opacity: 1;
+      }
+      to {
+        transform: translateX(400px);
+        opacity: 0;
+      }
+    }
+
+    .phone-ext-wrapper {
+      display: flex;
+      gap: 8px;
+    }
+
+    .phone-ext-wrapper input:first-child {
+      flex: 2;
+    }
+
+    .phone-ext-wrapper input:last-child {
+      flex: 0.8;
     }
   </style>
 </head>
@@ -656,12 +782,12 @@
 
       <div class="form-group">
         <label for="name" class="required">Full Name</label>
-        <input type="text" id="name" placeholder="e.g. Mohammad Salahudin" oninput="updateCard()">
+        <input type="text" id="name" placeholder="e.g. Mohammad Salahudin" oninput="validateField(this); updateCard()">
       </div>
 
       <div class="form-group">
         <label for="designation1" class="required">Designation</label>
-        <input type="text" id="designation1" placeholder="e.g. Branch Manager" oninput="updateCard()">
+        <input type="text" id="designation1" placeholder="e.g. Branch Manager" oninput="validateField(this); updateCard()">
       </div>
 
       <div class="form-group">
@@ -671,55 +797,57 @@
 
       <div class="form-group">
         <label for="address" class="required">Address</label>
-        <textarea id="address" placeholder="Branch name with Branch code and Complete Address" oninput="updateCard()"></textarea>
+        <textarea id="address" placeholder="Branch name with Branch code and Complete Address" oninput="validateField(this); updateCard()"></textarea>
       </div>
 
       <div class="form-row">
         <div class="form-group">
-          <label for="phone">Phone</label>
-          <div style="display: flex; gap: 8px;">
-            <input type="text" id="phone" placeholder="+92 (21) 99033-0000" style="flex: 2;" oninput="updateCard()">
-            <input type="text" id="phoneExt" placeholder="Ext: 12345" maxlength="8" style="flex: 1;" oninput="validateNumeric(this); updateCard()">
+          <label for="phone" class="required">Phone</label>
+          <div class="phone-ext-wrapper">
+            <input type="text" id="phone" placeholder="+92 (21) 99033-0000" oninput="formatPhone(this); validateField(this); updateCard()">
+            <input type="text" id="phoneExt" placeholder="Ext" maxlength="5" oninput="validateNumeric(this); updateCard()">
           </div>
         </div>
 
         <div class="form-group">
-          <label for="mobile">Mobile</label>
-          <input type="text" id="mobile" maxlength="16" placeholder="+92 3xx xxxxxxx" oninput="formatMobile(this); updateCard()">
-          <div class="char-counter" id="mobileCounter">Format: +92 3xx xxxxxxx (10 digits)</div>
+          <label for="mobile" class="required">Mobile</label>
+          <input type="text" id="mobile" maxlength="16" placeholder="+92 3xx xxxxxxx" oninput="formatMobile(this); validateField(this); updateCard()">
+          <div class="char-counter" id="mobileCounter">Format: +92 3xx xxxxxxx</div>
         </div>
       </div>
 
       <div class="form-group">
         <label for="email" class="required">Email</label>
-        <div class="email-input-group">
-          <input type="text" id="emailUsername" placeholder="your.name" maxlength="13" oninput="updateEmail()" onkeypress="return validateEmailChar(event)">
+        <div class="email-input-group" id="emailGroup">
+          <input type="text" id="emailUsername" placeholder="firstname.lastname" oninput="updateEmail()" onkeypress="return validateEmailChar(event)">
           <span class="email-domain">@ubl.com.pk</span>
         </div>
-        <div class="char-counter" id="emailCounter">0/13 characters</div>
+        <span class="input-hint" id="emailHint">Use only letters, numbers, dots and hyphens (e.g. john.doe or m.khan)</span>
       </div>
 
       <hr class="section-divider" data-text="Order Information">
 
       <div class="form-group">
-        <label for="branchDept">Branch / Department Name</label>
-        <input type="text" id="branchDept" placeholder="Enter branch or department" oninput="updateCard()">
+        <label for="branchDept" class="required">Branch / Department Name</label>
+        <input type="text" id="branchDept" placeholder="Enter branch or department" oninput="validateField(this); updateCard()">
       </div>
       
       <div class="form-group">
-        <label for="groupname">Group Name</label>
-        <input type="text" id="groupname" placeholder="Enter Group Name" oninput="updateCard()">
+        <label for="groupname" class="required">Group Name</label>
+        <input type="text" id="groupname" placeholder="Enter Group Name" oninput="validateField(this); updateCard()">
       </div>
 
       <div class="form-row">
         <div class="form-group">
           <label for="branchCode" class="required">Branch Code</label>
-          <input type="text" id="branchCode" maxlength="4" placeholder="4 digits" oninput="validateNumeric(this); updateCard()">
+          <input type="text" id="branchCode" maxlength="4" placeholder="4 digits" oninput="validateNumeric(this); validateField(this); updateCard()">
+          <span class="input-hint" id="branchCodeHint">Must be exactly 4 digits</span>
         </div>
 
         <div class="form-group">
           <label for="crcCode" class="required">CRC Code</label>
-          <input type="text" id="crcCode" maxlength="6" placeholder="6 digits" oninput="validateNumeric(this); updateCard()">
+          <input type="text" id="crcCode" maxlength="8" placeholder="8 characters" oninput="validateAlphanumeric(this); validateField(this); updateCard()">
+          <span class="input-hint" id="crcCodeHint">Must be exactly 8 alphanumeric characters</span>
         </div>
       </div>
 
@@ -729,23 +857,28 @@
       </div>
 
       <div class="form-group">
-        <label for="requestedBy">Requested By - Name</label>
-        <input type="text" id="requestedBy" placeholder="Your name" oninput="updateCard()">
+        <label for="requestedBy" class="required">Requested By - Name</label>
+        <input type="text" id="requestedBy" placeholder="Your name" oninput="validateField(this); updateCard()">
       </div>
 
       <div class="form-group">
-        <label for="requestedDesignation">Requested By - Designation</label>
-        <input type="text" id="requestedDesignation" placeholder="Your designation" oninput="updateCard()">
+        <label for="requestedDesignation" class="required">Requested By - Designation</label>
+        <input type="text" id="requestedDesignation" placeholder="Your designation" oninput="validateField(this); updateCard()">
       </div>
 
       <div class="form-group">
-        <label for="approvedBy">Approved By - Name</label>
-        <input type="text" id="approvedBy" placeholder="Approver's name" oninput="updateCard()">
+        <label for="approvedBy" class="required">Approved By - Name</label>
+        <input type="text" id="approvedBy" placeholder="Approver's name" oninput="validateField(this); updateCard()">
       </div>
 
       <div class="form-group">
-        <label for="approvedDesignation">Approved By - Designation</label>
-        <input type="text" id="approvedDesignation" placeholder="Approver's designation" oninput="updateCard()">
+        <label for="approvedDesignation" class="required">Approved By - Designation</label>
+        <input type="text" id="approvedDesignation" placeholder="Approver's designation" oninput="validateField(this); updateCard()">
+      </div>
+
+      <div class="validation-summary" id="validationSummary">
+        <h4>Please complete the following required fields:</h4>
+        <ul id="validationList"></ul>
       </div>
 
       <div class="button-group">
@@ -768,11 +901,13 @@
       </div>
 
       <div class="info-box">
-        <strong>💡 Alternative Download Methods:</strong>
+        <strong>💡 Quick Tips:</strong>
         <ul>
-          <li><strong>Windows:</strong> Press Ctrl+P → Enable "Background graphics" → Save as PDF</li>
-          <li><strong>Mac:</strong> Press Cmd+P → Save as PDF</li>
-          <li><strong>Screenshot:</strong> Use Snipping Tool (Win+Shift+S) or Screenshot (Cmd+Shift+4)</li>
+          <li>All fields marked with <span style="color: #e74c3c;">*</span> are mandatory</li>
+          <li>Email: Use only <strong>firstname.lastname</strong> format (no @ symbol needed)</li>
+          <li>Phone and mobile numbers auto-format with +92 prefix</li>
+          <li>Download will be enabled once all required fields are filled correctly</li>
+          <li>Press Ctrl+P (Windows) or Cmd+P (Mac) for alternative print option</li>
         </ul>
       </div>
     </div>
@@ -796,7 +931,7 @@
             <div class="contact-info">
               <div id="conv-phone-row">Phone : <span id="conv-phone">+92 (21) 99033-0000</span></div>
               <div id="conv-mobile-row">Mobile : <span id="conv-mobile">+92 3xx xxxxxxx</span></div>
-              <div id="conv-email-row">Email : <span id="conv-email">your.name@ubl.com.pk</span></div>
+              <div id="conv-email-row">Email : <span id="conv-email"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="522b3d27207c3c333f371227303e7c313d3f7c2239">[email&#160;protected]</a></span></div>
             </div>
           </div>
           
@@ -829,7 +964,7 @@
                 <div class="contact-left">
                   <div class="contact-item" id="isl-phone-row">
                     <span class="contact-label">Phone :</span>
-                    <span id="isl-phone">+92 (31)</span>
+                    <span id="isl-phone">+92 (31) 2345678</span>
                   </div>
                   <div class="contact-item" id="isl-mobile-row">
                     <span class="contact-label">Mobile :</span>
@@ -837,7 +972,7 @@
                   </div>
                   <div class="contact-item" id="isl-email-row">
                     <span class="contact-label">E-mail :</span>
-                    <span id="isl-email">your.name@ubl.com.pk</span>
+                    <span id="isl-email"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="334a5c46411d5d525e567346515f1d505c5e1d4358">[email&#160;protected]</a></span>
                   </div>
                 </div>
                 <div class="contact-right">
@@ -854,8 +989,8 @@
 
       <div class="order-info" id="orderInfo">
         <div class="order-info-header no-print">
-          <strong>📋 Important Instructions:</strong>
-          Please fill this form with accurate information and have it signed from approver hierarchy. Afterward, share scan copy of this form to Group ID <strong>stationery.requisition@ubl.com.pk</strong> for printing.
+          <strong>📋 Important Instructions:</strong> <br>
+          Please fill this form with accurate information and have it signed from approver hierarchy. Afterward, share scan copy of this form to Group ID <br><strong> (<a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="91e2e5f0e5f8fefff4e3e8bfe3f4e0e4f8e2f8e5f8feffd1e4f3fdbff2fefcbfe1fa">[email&#160;protected]</a>)</strong> for printing.
           <br><br>
           Also, please review your card sample with this form as the same will be considered for final printing.
         </div>
@@ -930,12 +1065,30 @@
     </div>
   </div>
 
-  <script>
+  <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
     let currentTemplate = 'conventional';
+
+    const requiredFields = {
+      'name': 'Full Name',
+      'designation1': 'Designation',
+      'address': 'Address',
+      'phone': 'Phone',
+      'mobile': 'Mobile',
+      'emailUsername': 'Email',
+      'branchDept': 'Branch/Department Name',
+      'groupname': 'Group Name',
+      'branchCode': 'Branch Code (4 digits)',
+      'crcCode': 'CRC Code (8 alphanumeric characters)',
+      'requestedBy': 'Requested By - Name',
+      'requestedDesignation': 'Requested By - Designation',
+      'approvedBy': 'Approved By - Name',
+      'approvedDesignation': 'Approved By - Designation'
+    };
 
     function validateEmailChar(e) {
       const char = String.fromCharCode(e.which);
-      const allowedChars = /[a-z0-9._-]/i;
+      // Only allow letters, numbers, dots, and hyphens (NO @ symbol)
+      const allowedChars = /[a-z0-9.-]/i;
       
       if (!allowedChars.test(char)) {
         e.preventDefault();
@@ -944,20 +1097,133 @@
       return true;
     }
 
-    function updateEmail() {
-      const emailUsername = document.getElementById('emailUsername');
-      const counter = document.getElementById('emailCounter');
-      const length = emailUsername.value.length;
+    function validateField(field) {
+      const fieldId = field.id;
+      const value = field.value.trim();
       
-      counter.textContent = `${length}/13 characters`;
-      
-      if (length > 10) {
-        counter.classList.add('warning');
-      } else {
-        counter.classList.remove('warning');
+      // Special validation for specific fields
+      if (fieldId === 'branchCode') {
+        const hint = document.getElementById('branchCodeHint');
+        if (value.length !== 4) {
+          hint.classList.remove('success');
+          return false;
+        } else {
+          hint.classList.add('success');
+          hint.textContent = '✓ Valid branch code';
+          field.classList.add('valid');
+          return true;
+        }
+      } else if (fieldId === 'crcCode') {
+        const hint = document.getElementById('crcCodeHint');
+        if (value.length !== 8) {
+          hint.classList.remove('success');
+          return false;
+        } else {
+          hint.classList.add('success');
+          hint.textContent = '✓ Valid CRC code';
+          field.classList.add('valid');
+          return true;
+        }
+      } else if (fieldId === 'mobile') {
+        const digits = value.replace(/\D/g, '');
+        if (digits.length !== 10 || !digits.startsWith('3')) {
+          return false;
+        } else {
+          field.classList.add('valid');
+          return true;
+        }
+      } else if (fieldId === 'phone') {
+        const digits = value.replace(/\D/g, '');
+        if (digits.length < 8) {
+          return false;
+        } else {
+          field.classList.add('valid');
+          return true;
+        }
+      } else if (fieldId === 'emailUsername') {
+        const emailGroup = document.getElementById('emailGroup');
+        const hint = document.getElementById('emailHint');
+        if (value === '' || value.includes('@')) {
+          emailGroup.classList.remove('valid');
+          hint.classList.remove('success');
+          return false;
+        } else {
+          emailGroup.classList.add('valid');
+          hint.classList.add('success');
+          hint.textContent = '✓ Valid email format';
+          return true;
+        }
+      } else if (value === '') {
+        field.classList.remove('valid');
+        return false;
       }
       
+      field.classList.add('valid');
+      return true;
+    }
+
+    function validateAllFields() {
+      let isValid = true;
+      const missingFields = [];
+      
+      for (const [fieldId, fieldName] of Object.entries(requiredFields)) {
+        const field = document.getElementById(fieldId);
+        if (field) {
+          if (!validateField(field)) {
+            isValid = false;
+            missingFields.push(fieldName);
+          }
+        }
+      }
+      
+      const validationSummary = document.getElementById('validationSummary');
+      const validationList = document.getElementById('validationList');
+      const downloadBtn = document.getElementById('downloadBtn');
+      
+      if (missingFields.length > 0) {
+        validationList.innerHTML = missingFields.map(field => `<li>${field}</li>`).join('');
+        validationSummary.classList.add('show');
+        downloadBtn.disabled = true;
+      } else {
+        validationSummary.classList.remove('show');
+        downloadBtn.disabled = false;
+      }
+      
+      return isValid;
+    }
+
+    function updateEmail() {
+      const emailUsername = document.getElementById('emailUsername');
+      // Prevent @ symbol in email username
+      emailUsername.value = emailUsername.value.replace(/@/g, '');
+      validateField(emailUsername);
       updateCard();
+      validateAllFields();
+    }
+
+    function formatPhone(input) {
+      let value = input.value.replace(/\D/g, '');
+      
+      // Remove 92 if user types it
+      if (value.startsWith('92')) {
+        value = value.substring(2);
+      }
+      
+      // Format: +92 (XX) XXXXX-XXXX
+      let formatted = '+92';
+      if (value.length > 0) {
+        formatted += ' (' + value.substring(0, 2);
+        if (value.length > 2) {
+          formatted += ') ' + value.substring(2, 7);
+          if (value.length > 7) {
+            formatted += '-' + value.substring(7, 11);
+          }
+        } else if (value.length === 2) {
+          formatted += ')';
+        }
+      }
+      
+      input.value = value ? formatted : '';
     }
 
     function formatMobile(input) {
@@ -989,19 +1255,26 @@
       const digitCount = value.length;
       
       if (digitCount === 0) {
-        counter.textContent = 'Format: +92 3xx xxxxxxx (11 digits)';
-        counter.classList.remove('warning');
+        counter.textContent = 'Format: +92 3xx xxxxxxx';
+        counter.classList.remove('warning', 'success');
       } else if (digitCount === 10) {
         counter.textContent = `✓ Complete (10 digits)`;
         counter.classList.remove('warning');
+        counter.classList.add('success');
       } else {
         counter.textContent = `${digitCount}/10 digits`;
         counter.classList.add('warning');
+        counter.classList.remove('success');
       }
     }
 
     function validateNumeric(input) {
       input.value = input.value.replace(/\D/g, '');
+    }
+
+    function validateAlphanumeric(input) {
+      // Allow only letters and numbers for CRC code
+      input.value = input.value.replace(/[^a-zA-Z0-9]/g, '').toUpperCase();
     }
 
     function switchTemplate() {
@@ -1033,8 +1306,8 @@
       const emailUsername = document.getElementById('emailUsername').value;
       const email = emailUsername ? emailUsername + '@ubl.com.pk' : '';
 
-      // Format phone with extension
-      const phoneDisplay = phone + (phoneExt ? ' Ext: ' + phoneExt : '');
+      // Format phone display - show Ext only if phoneExt has value
+      const phoneDisplay = phoneExt ? `${phone} Ext: ${phoneExt}` : phone;
 
       if (currentTemplate === 'conventional') {
         document.getElementById('conv-name').textContent = name || 'Mohammad Salahudin';
@@ -1042,7 +1315,7 @@
         document.getElementById('conv-desig2').textContent = desig2 || '';
         document.getElementById('conv-desig2').style.display = desig2 ? 'block' : 'none';
         document.getElementById('conv-address').innerHTML = address || '5th Floor, Head Office, Slico Building # 01<br>I.I. Chundrigar Road, Karachi - Pakistan';
-        document.getElementById('conv-phone').textContent = phoneDisplay || '+92 (21) 99033-0000 Ext: 12000';
+        document.getElementById('conv-phone').textContent = phoneDisplay || '+92 (21) 99033-0000';
         document.getElementById('conv-mobile').textContent = mobile || '+92 3xx xxxxxxx';
         document.getElementById('conv-email').textContent = email || 'your.name@ubl.com.pk';
       } else {
@@ -1051,7 +1324,7 @@
         document.getElementById('isl-desig2').textContent = desig2;
         document.getElementById('isl-desig2').style.display = desig2 ? 'block' : 'none';
         document.getElementById('isl-address-right').innerHTML = address || 'Kaneez Fatima Society Branch (2426) Karachi - Pakistan';
-        document.getElementById('isl-phone').textContent = phoneDisplay || '+92 (31) Ext: 12000';
+        document.getElementById('isl-phone').textContent = phoneDisplay || '+92 (31) 2345678';
         document.getElementById('isl-mobile').textContent = mobile || '+92 300 0000000';
         document.getElementById('isl-email').textContent = email || 'your.name@ubl.com.pk';
       }
@@ -1091,9 +1364,17 @@
       document.getElementById('date-m2').textContent = month[1];
       document.getElementById('date-y1').textContent = year[0];
       document.getElementById('date-y2').textContent = year[1];
+
+      validateAllFields();
     }
 
     function downloadCard() {
+      if (!validateAllFields()) {
+        showNotification('⚠️ Please fill all required fields before downloading', 'error');
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+        return;
+      }
+
       const btn = document.getElementById('downloadBtn');
       btn.disabled = true;
       btn.classList.add('downloading');
@@ -1119,7 +1400,6 @@
           imageTimeout: 0,
           removeContainer: true
         }).then(cardCanvas => {
-          // Temporarily hide the instructions header
           const instructionsHeader = document.querySelector('.order-info-header');
           const originalDisplay = instructionsHeader.style.display;
           instructionsHeader.style.display = 'none';
@@ -1133,7 +1413,6 @@
             imageTimeout: 0,
             removeContainer: true
           }).then(orderCanvas => {
-            // Restore the instructions header
             instructionsHeader.style.display = originalDisplay;
             
             try {
@@ -1211,8 +1490,23 @@
         document.getElementById('requestedDesignation').value = '';
         document.getElementById('approvedBy').value = '';
         document.getElementById('approvedDesignation').value = '';
-        document.getElementById('emailCounter').textContent = '0/13 characters';
-        document.getElementById('mobileCounter').textContent = 'Format: +92 3xx xxxxxxx (11 digits)';
+        
+        // Remove validation classes
+        document.querySelectorAll('input, textarea, select').forEach(field => {
+          field.classList.remove('valid');
+        });
+        document.getElementById('emailGroup').classList.remove('valid');
+        
+        // Reset hints
+        document.getElementById('mobileCounter').textContent = 'Format: +92 3xx xxxxxxx';
+        document.getElementById('mobileCounter').classList.remove('warning', 'success');
+        document.getElementById('emailHint').textContent = 'Use only letters, numbers, dots and hyphens (e.g. john.doe or m.khan)';
+        document.getElementById('emailHint').classList.remove('success');
+        document.getElementById('branchCodeHint').textContent = 'Must be exactly 4 digits';
+        document.getElementById('branchCodeHint').classList.remove('success');
+        document.getElementById('crcCodeHint').textContent = 'Must be exactly 8 alphanumeric characters';
+        document.getElementById('crcCodeHint').classList.remove('success');
+        
         updateCard();
         showNotification('🗑️ All fields cleared', 'info');
       }
@@ -1234,7 +1528,7 @@
       const branchCode = document.getElementById('branchCode').value;
       const crcCode = document.getElementById('crcCode').value;
 
-      const phoneDisplay = phone + (phoneExt ? ' Ext: ' + phoneExt : '');
+      const phoneDisplay = phoneExt ? `${phone} Ext: ${phoneExt}` : phone;
 
       const text = `
 ${cardType} Business Card Order
@@ -1299,30 +1593,10 @@ Submit to: stationery.requisition@ubl.com.pk
       }, 3000);
     }
 
-    const style = document.createElement('style');
-    style.textContent = `
-      @keyframes slideIn {
-        from {
-          transform: translateX(400px);
-          opacity: 0;
-        }
-        to {
-          transform: translateX(0);
-          opacity: 1;
-        }
-      }
-      @keyframes slideOut {
-        from {
-          transform: translateX(0);
-          opacity: 1;
-        }
-        to {
-          transform: translateX(400px);
-          opacity: 0;
-        }
-      }
-    `;
-    document.head.appendChild(style);
+    // Initialize validation on page load
+    window.addEventListener('load', () => {
+      validateAllFields();
+    });
 
     updateCard();
   </script>
