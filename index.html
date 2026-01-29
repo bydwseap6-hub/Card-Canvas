@@ -811,7 +811,7 @@
 
         <div class="form-group">
           <label for="mobile" class="required">Mobile</label>
-          <input type="text" id="mobile" maxlength="16" placeholder="+92 3xx xxxxxxx" oninput="formatMobile(this); validateField(this); updateCard()">
+          <input type="text" id="mobile" maxlength="17" placeholder="+92 3xx xxxxxxx" oninput="formatMobile(this); validateField(this); updateCard()">
           <div class="char-counter" id="mobileCounter">Format: +92 3xx xxxxxxx</div>
         </div>
       </div>
@@ -1124,15 +1124,24 @@
           field.classList.add('valid');
           return true;
         }
-      } else if (fieldId === 'mobile') {
-        const digits = value.replace(/\D/g, '');
-        if (digits.length !== 10 || !digits.startsWith('3')) {
-          return false;
-        } else {
-          field.classList.add('valid');
-          return true;
-        }
-      } else if (fieldId === 'phone') {
+      }  else if (fieldId === 'mobile') {
+  let digits = value.replace(/\D/g, '');
+
+  // Remove country code if present
+  if (digits.startsWith('92')) {
+    digits = digits.substring(2);
+  }
+
+  if (digits.length === 10 && digits.startsWith('3')) {
+    field.classList.add('valid');
+    return true;
+  } else {
+    field.classList.remove('valid');
+    return false;
+  }
+}
+
+       else if (fieldId === 'phone') {
         const digits = value.replace(/\D/g, '');
         if (digits.length < 8) {
           return false;
