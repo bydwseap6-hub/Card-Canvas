@@ -17,6 +17,14 @@
       background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       min-height: 100vh;
+      animation: backgroundShift 15s ease infinite;
+      background-size: 200% 200%;
+    }
+
+    @keyframes backgroundShift {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
     }
 
     .container {
@@ -25,6 +33,18 @@
       display: flex;
       gap: 30px;
       flex-wrap: wrap;
+      animation: fadeInUp 0.8s ease-out;
+    }
+
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
     }
 
     .form-section {
@@ -34,6 +54,18 @@
       padding: 30px;
       border-radius: 12px;
       box-shadow: 0 8px 32px rgba(0,0,0,0.15);
+      animation: slideInLeft 0.6s ease-out;
+    }
+
+    @keyframes slideInLeft {
+      from {
+        opacity: 0;
+        transform: translateX(-50px);
+      }
+      to {
+        opacity: 1;
+        transform: translateX(0);
+      }
     }
 
     .form-section h2 {
@@ -45,16 +77,52 @@
       display: flex;
       align-items: center;
       gap: 10px;
+      animation: slideInDown 0.5s ease-out 0.3s both;
+    }
+
+    @keyframes slideInDown {
+      from {
+        opacity: 0;
+        transform: translateY(-20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
     }
 
     .form-section h2::before {
       content: '📝';
       font-size: 28px;
+      animation: bounce 2s ease-in-out infinite;
+    }
+
+    @keyframes bounce {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-5px); }
     }
 
     .form-group {
       margin-bottom: 18px;
       position: relative;
+      animation: fadeIn 0.5s ease-out;
+      animation-fill-mode: both;
+    }
+
+    .form-group:nth-child(1) { animation-delay: 0.1s; }
+    .form-group:nth-child(2) { animation-delay: 0.15s; }
+    .form-group:nth-child(3) { animation-delay: 0.2s; }
+    .form-group:nth-child(4) { animation-delay: 0.25s; }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
     }
 
     .form-group label {
@@ -63,12 +131,29 @@
       font-weight: 600;
       font-size: 14px;
       color: #333;
+      transition: color 0.3s ease;
+    }
+
+    .form-group:focus-within label {
+      color: #0066b2;
+      animation: pulse 0.5s ease;
+    }
+
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.05); }
     }
 
     .required::after {
       content: ' *';
       color: #e74c3c;
       font-weight: bold;
+      animation: blink 2s ease-in-out infinite;
+    }
+
+    @keyframes blink {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.5; }
     }
 
     .form-group input,
@@ -80,7 +165,7 @@
       border-radius: 6px;
       font-size: 14px;
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      transition: all 0.3s ease;
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
     }
 
     .form-group input:focus,
@@ -89,12 +174,20 @@
       outline: none;
       border-color: #0066b2;
       box-shadow: 0 0 0 3px rgba(0, 102, 178, 0.1);
+      transform: translateY(-2px);
     }
 
     .form-group input.valid,
     .form-group textarea.valid,
     .form-group select.valid {
       border-color: #28a745;
+      animation: successPulse 0.6s ease;
+    }
+
+    @keyframes successPulse {
+      0% { box-shadow: 0 0 0 0 rgba(40, 167, 69, 0.4); }
+      70% { box-shadow: 0 0 0 10px rgba(40, 167, 69, 0); }
+      100% { box-shadow: 0 0 0 0 rgba(40, 167, 69, 0); }
     }
 
     .form-group textarea {
@@ -116,16 +209,18 @@
       border: 2px solid #e0e0e0;
       border-radius: 6px;
       padding-right: 14px;
-      transition: all 0.3s ease;
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
     }
 
     .email-input-group:focus-within {
       border-color: #0066b2;
       box-shadow: 0 0 0 3px rgba(0, 102, 178, 0.1);
+      transform: translateY(-2px);
     }
 
     .email-input-group.valid {
       border-color: #28a745;
+      animation: successPulse 0.6s ease;
     }
 
     .email-input-group input {
@@ -143,6 +238,18 @@
       color: #0066b2;
       white-space: nowrap;
       font-size: 14px;
+      animation: slideInRight 0.5s ease;
+    }
+
+    @keyframes slideInRight {
+      from {
+        opacity: 0;
+        transform: translateX(10px);
+      }
+      to {
+        opacity: 1;
+        transform: translateX(0);
+      }
     }
 
     .input-hint {
@@ -150,11 +257,24 @@
       color: #666;
       margin-top: 4px;
       display: block;
+      transition: all 0.3s ease;
     }
 
     .input-hint.success {
       color: #28a745;
       font-weight: 600;
+      animation: slideInLeft 0.3s ease;
+    }
+
+    @keyframes slideInLeft {
+      from {
+        opacity: 0;
+        transform: translateX(-10px);
+      }
+      to {
+        opacity: 1;
+        transform: translateX(0);
+      }
     }
 
     .button-group {
@@ -171,15 +291,35 @@
       font-size: 15px;
       font-weight: 600;
       cursor: pointer;
-      transition: all 0.3s ease;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
       display: flex;
       align-items: center;
       justify-content: center;
       gap: 8px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    button::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 0;
+      height: 0;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.3);
+      transform: translate(-50%, -50%);
+      transition: width 0.6s, height 0.6s;
+    }
+
+    button:hover::before {
+      width: 300px;
+      height: 300px;
     }
 
     button:active:not(:disabled) {
-      transform: translateY(1px);
+      transform: scale(0.95);
     }
 
     .btn-update {
@@ -208,6 +348,13 @@
       background: linear-gradient(135deg, #6c757d 0%, #5a6268 100%);
       cursor: not-allowed;
       opacity: 0.6;
+      animation: shake 0.5s ease;
+    }
+
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+      20%, 40%, 60%, 80% { transform: translateX(5px); }
     }
 
     .btn-clear {
@@ -257,6 +404,18 @@
     .preview-section {
       flex: 1;
       min-width: 450px;
+      animation: slideInRight 0.6s ease-out;
+    }
+
+    @keyframes slideInRight {
+      from {
+        opacity: 0;
+        transform: translateX(50px);
+      }
+      to {
+        opacity: 1;
+        transform: translateX(0);
+      }
     }
 
     .preview-label {
@@ -266,6 +425,7 @@
       color: white;
       margin-bottom: 20px;
       text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+      animation: fadeIn 0.5s ease-out 0.4s both;
     }
 
     .card-wrapper {
@@ -274,6 +434,24 @@
       border-radius: 12px;
       box-shadow: 0 8px 32px rgba(0,0,0,0.15);
       display: inline-block;
+      transition: all 0.3s ease;
+      animation: scaleIn 0.6s ease-out 0.5s both;
+    }
+
+    @keyframes scaleIn {
+      from {
+        opacity: 0;
+        transform: scale(0.9);
+      }
+      to {
+        opacity: 1;
+        transform: scale(1);
+      }
+    }
+
+    .card-wrapper:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 12px 40px rgba(0,0,0,0.2);
     }
 
     .business-card {
@@ -284,6 +462,11 @@
       box-shadow: 0 4px 20px rgba(0,0,0,0.15);
       overflow: hidden;
       border-radius: 2mm;
+      transition: all 0.3s ease;
+    }
+
+    .business-card:hover {
+      box-shadow: 0 8px 30px rgba(0,0,0,0.25);
     }
 
     .card-conventional .card-header {
@@ -449,6 +632,16 @@
       border: none;
       border-top: 2px solid #e0e0e0;
       position: relative;
+      animation: expandWidth 0.6s ease-out;
+    }
+
+    @keyframes expandWidth {
+      from {
+        transform: scaleX(0);
+      }
+      to {
+        transform: scaleX(1);
+      }
     }
 
     .section-divider::after {
@@ -461,6 +654,7 @@
       color: #0066b2;
       font-weight: 700;
       font-size: 15px;
+      animation: fadeIn 0.5s ease 0.3s both;
     }
 
     .info-box {
@@ -471,6 +665,18 @@
       border-radius: 6px;
       font-size: 13px;
       line-height: 1.6;
+      animation: slideInUp 0.5s ease-out;
+    }
+
+    @keyframes slideInUp {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
     }
 
     .info-box strong {
@@ -487,7 +693,14 @@
 
     .info-box li {
       margin: 4px 0;
+      animation: fadeIn 0.5s ease both;
     }
+
+    .info-box li:nth-child(1) { animation-delay: 0.1s; }
+    .info-box li:nth-child(2) { animation-delay: 0.2s; }
+    .info-box li:nth-child(3) { animation-delay: 0.3s; }
+    .info-box li:nth-child(4) { animation-delay: 0.4s; }
+    .info-box li:nth-child(5) { animation-delay: 0.5s; }
 
     .validation-summary {
       margin-top: 15px;
@@ -497,6 +710,19 @@
       border-radius: 6px;
       display: none;
       animation: slideDown 0.3s ease-out;
+    }
+
+    @keyframes slideDown {
+      from {
+        opacity: 0;
+        transform: translateY(-10px);
+        max-height: 0;
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+        max-height: 500px;
+      }
     }
 
     .validation-summary.show {
@@ -515,6 +741,13 @@
     .validation-summary h4::before {
       content: '⚠️';
       font-size: 18px;
+      animation: wiggle 1s ease infinite;
+    }
+
+    @keyframes wiggle {
+      0%, 100% { transform: rotate(0deg); }
+      25% { transform: rotate(-10deg); }
+      75% { transform: rotate(10deg); }
     }
 
     .validation-summary ul {
@@ -526,41 +759,48 @@
 
     .validation-summary li {
       margin: 4px 0;
+      animation: fadeIn 0.3s ease both;
     }
+
+    .validation-summary li:nth-child(1) { animation-delay: 0.05s; }
+    .validation-summary li:nth-child(2) { animation-delay: 0.1s; }
+    .validation-summary li:nth-child(3) { animation-delay: 0.15s; }
 
     .order-info {
       margin-top: 25px;
-      padding: 25px;
+      padding: 20px;
       background: white;
       border: 2px solid #333;
       border-radius: 8px;
       font-family: Arial, sans-serif;
+      animation: fadeIn 0.6s ease-out 0.7s both;
     }
 
     .order-info-header {
       background: #f8f9fa;
-      padding: 15px;
-      border: 4px solid #b20029;
+      padding: 12px;
+      border: 2px solid #0066b2;
       border-radius: 6px;
-      margin-bottom: 20px;
+      margin-bottom: 15px;
       font-size: 11px;
-      line-height: 1.6;
+      line-height: 1.5;
       color: #2c3e50;
     }
 
     .order-info-header strong {
-      font-size: 13px;
+      display: block;
+      font-size: 12px;
       color: #0066b2;
-      margin-bottom: 10px;
+      margin-bottom: 8px;
     }
 
     .order-info h3 {
-      margin: 0 0 15px 0;
-      padding: 10px;
+      margin: 0 0 12px 0;
+      padding: 8px;
       background: #0066b2;
       color: white;
       border-radius: 4px;
-      font-size: 16px;
+      font-size: 15px;
       font-weight: 700;
       text-align: center;
     }
@@ -568,7 +808,7 @@
     .order-row {
       display: flex;
       gap: 20px;
-      margin-bottom: 14px;
+      margin-bottom: 10px;
       font-size: 13px;
     }
 
@@ -581,7 +821,8 @@
       color: #333;
       margin-right: 8px;
       display: block;
-      margin-bottom: 4px;
+      margin-bottom: 3px;
+      font-size: 12px;
     }
 
     .order-field .value {
@@ -589,8 +830,8 @@
       border-bottom: 2px solid #333;
       display: block;
       min-width: 150px;
-      padding: 4px 0;
-      min-height: 24px;
+      padding: 3px 0;
+      min-height: 22px;
     }
 
     .order-date {
@@ -599,8 +840,8 @@
     }
 
     .order-date .date-box {
-      width: 28px;
-      height: 28px;
+      width: 26px;
+      height: 26px;
       border: 2px solid #333;
       display: inline-flex;
       align-items: center;
@@ -608,13 +849,20 @@
       font-weight: bold;
       border-radius: 2px;
       background: white;
+      font-size: 13px;
+      transition: all 0.3s ease;
+    }
+
+    .order-date .date-box:hover {
+      background: #f0f0f0;
+      transform: scale(1.1);
     }
 
     .signature-section {
-      margin-top: 30px;
+      margin-top: 20px;
       display: flex;
       gap: 40px;
-      padding-top: 20px;
+      padding-top: 15px;
       border-top: 2px solid #e0e0e0;
     }
 
@@ -623,22 +871,22 @@
     }
 
     .signature-box h4 {
-      margin: 0 0 40px 0;
-      font-size: 14px;
+      margin: 0 0 30px 0;
+      font-size: 13px;
       font-weight: 600;
       color: #0066b2;
     }
 
     .signature-box .sig-line {
       border-bottom: 2px solid #333;
-      margin-bottom: 6px;
-      padding: 6px 0;
-      min-height: 28px;
+      margin-bottom: 5px;
+      padding: 5px 0;
+      min-height: 26px;
       font-weight: bold;
     }
 
     .signature-box .sig-label {
-      font-size: 12px;
+      font-size: 11px;
       color: #666;
       font-weight: 600;
     }
@@ -648,43 +896,102 @@
       color: #666;
       text-align: right;
       margin-top: 4px;
+      transition: all 0.3s ease;
     }
 
     .char-counter.warning {
       color: #ff9800;
       font-weight: 600;
+      animation: pulse 1s ease infinite;
     }
 
     .char-counter.success {
       color: #28a745;
       font-weight: 600;
+      animation: checkmark 0.5s ease;
     }
 
-    @keyframes slideDown {
-      from {
-        opacity: 0;
-        transform: translateY(-10px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
+    @keyframes checkmark {
+      0% { transform: scale(0); }
+      50% { transform: scale(1.2); }
+      100% { transform: scale(1); }
     }
 
     @media print {
       body {
         background: white;
+        margin: 0;
+        padding: 10px;
       }
+      
       .form-section,
       .preview-label,
       button,
       .info-box,
-      .no-print {
+      .no-print,
+      .validation-summary {
         display: none !important;
       }
+      
+      .container {
+        display: block;
+      }
+      
+      .preview-section {
+        width: 100%;
+      }
+      
       .card-wrapper {
         box-shadow: none;
-        padding: 0;
+        padding: 10px;
+        margin-bottom: 15px;
+      }
+      
+      .business-card {
+        page-break-inside: avoid;
+      }
+      
+      .order-info {
+        page-break-inside: avoid;
+        margin-top: 15px;
+        padding: 15px;
+        font-size: 11px;
+      }
+      
+      .order-info h3 {
+        font-size: 14px;
+        padding: 8px;
+        margin: 0 0 10px 0;
+      }
+      
+      .order-row {
+        margin-bottom: 8px;
+        font-size: 11px;
+      }
+      
+      .order-field .value {
+        min-height: 20px;
+        padding: 2px 0;
+      }
+      
+      .signature-section {
+        margin-top: 15px;
+        padding-top: 10px;
+      }
+      
+      .signature-box h4 {
+        margin: 0 0 25px 0;
+        font-size: 12px;
+      }
+      
+      .signature-box .sig-line {
+        min-height: 22px;
+        padding: 4px 0;
+        margin-bottom: 4px;
+      }
+      
+      .signature-box .sig-label {
+        font-size: 11px;
       }
       
       * {
@@ -696,6 +1003,16 @@
       .card-header {
         -webkit-print-color-adjust: exact !important;
         print-color-adjust: exact !important;
+      }
+      
+      @page {
+        size: A4;
+        margin: 10mm;
+      }
+      
+      html, body {
+        height: auto;
+        overflow: visible;
       }
     }
 
@@ -731,28 +1048,6 @@
       }
     }
 
-    @keyframes slideIn {
-      from {
-        transform: translateX(400px);
-        opacity: 0;
-      }
-      to {
-        transform: translateX(0);
-        opacity: 1;
-      }
-    }
-
-    @keyframes slideOut {
-      from {
-        transform: translateX(0);
-        opacity: 1;
-      }
-      to {
-        transform: translateX(400px);
-        opacity: 0;
-      }
-    }
-
     .phone-ext-wrapper {
       display: flex;
       gap: 8px;
@@ -764,6 +1059,24 @@
 
     .phone-ext-wrapper input:last-child {
       flex: 0.8;
+    }
+
+    /* Floating particles animation */
+    @keyframes float {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-20px); }
+    }
+
+    /* Success checkmark animation */
+    .success-checkmark {
+      display: inline-block;
+      animation: checkmarkPop 0.5s ease;
+    }
+
+    @keyframes checkmarkPop {
+      0% { transform: scale(0) rotate(0deg); }
+      50% { transform: scale(1.3) rotate(180deg); }
+      100% { transform: scale(1) rotate(360deg); }
     }
   </style>
 </head>
@@ -931,7 +1244,7 @@
             <div class="contact-info">
               <div id="conv-phone-row">Phone : <span id="conv-phone">+92 (21) 99033-0000</span></div>
               <div id="conv-mobile-row">Mobile : <span id="conv-mobile">+92 3xx xxxxxxx</span></div>
-              <div id="conv-email-row">Email : <span id="conv-email"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="522b3d27207c3c333f371227303e7c313d3f7c2239">[email&#160;protected]</a></span></div>
+              <div id="conv-email-row">Email : <span id="conv-email">your.name@ubl.com.pk</span></div>
             </div>
           </div>
           
@@ -972,7 +1285,7 @@
                   </div>
                   <div class="contact-item" id="isl-email-row">
                     <span class="contact-label">E-mail :</span>
-                    <span id="isl-email"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="334a5c46411d5d525e567346515f1d505c5e1d4358">[email&#160;protected]</a></span>
+                    <span id="isl-email">your.name@ubl.com.pk</span>
                   </div>
                 </div>
                 <div class="contact-right">
@@ -990,12 +1303,12 @@
       <div class="order-info" id="orderInfo">
         <div class="order-info-header no-print">
           <strong>📋 Important Instructions:</strong> <br>
-          Please fill this form with accurate information and have it signed from approver hierarchy. Afterward, share scan copy of this form to Group ID <br><strong> (stationery.requisition@ubl.com.pk)</strong> for printing.
+          Please fill this form with accurate information and have it signed from approver hierarchy. Afterward, share scan copy of this form to Group ID <strong>(stationery.requisition@ubl.com.pk)</strong> for printing.
           <br><br>
           Also, please review your card sample with this form as the same will be considered for final printing.
         </div>
 
-        <h3>User Information</h3>
+        <h3>Order Information</h3>
         
         <div class="order-row">
           <div class="order-field">
@@ -1065,7 +1378,7 @@
     </div>
   </div>
 
-  <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+  <script>
     let currentTemplate = 'conventional';
 
     const requiredFields = {
@@ -1087,7 +1400,6 @@
 
     function validateEmailChar(e) {
       const char = String.fromCharCode(e.which);
-      // Only allow letters, numbers, dots, and hyphens (NO @ symbol)
       const allowedChars = /[a-z0-9.-]/i;
       
       if (!allowedChars.test(char)) {
@@ -1101,15 +1413,15 @@
       const fieldId = field.id;
       const value = field.value.trim();
       
-      // Special validation for specific fields
       if (fieldId === 'branchCode') {
         const hint = document.getElementById('branchCodeHint');
         if (value.length !== 4) {
           hint.classList.remove('success');
+          field.classList.remove('valid');
           return false;
         } else {
           hint.classList.add('success');
-          hint.textContent = '✓ Valid branch code';
+          hint.innerHTML = '<span class="success-checkmark">✓</span> Valid branch code';
           field.classList.add('valid');
           return true;
         }
@@ -1117,33 +1429,30 @@
         const hint = document.getElementById('crcCodeHint');
         if (value.length !== 8) {
           hint.classList.remove('success');
+          field.classList.remove('valid');
           return false;
         } else {
           hint.classList.add('success');
-          hint.textContent = '✓ Valid CRC code';
+          hint.innerHTML = '<span class="success-checkmark">✓</span> Valid CRC code';
           field.classList.add('valid');
           return true;
         }
-      }  else if (fieldId === 'mobile') {
-  let digits = value.replace(/\D/g, '');
-
-  // Remove country code if present
-  if (digits.startsWith('92')) {
-    digits = digits.substring(2);
-  }
-
-  if (digits.length === 10 && digits.startsWith('3')) {
-    field.classList.add('valid');
-    return true;
-  } else {
-    field.classList.remove('valid');
-    return false;
-  }
-}
-
-       else if (fieldId === 'phone') {
+      } else if (fieldId === 'mobile') {
+        let digits = value.replace(/\D/g, '');
+        if (digits.startsWith('92')) {
+          digits = digits.substring(2);
+        }
+        if (digits.length === 10 && digits.startsWith('3')) {
+          field.classList.add('valid');
+          return true;
+        } else {
+          field.classList.remove('valid');
+          return false;
+        }
+      } else if (fieldId === 'phone') {
         const digits = value.replace(/\D/g, '');
         if (digits.length < 8) {
+          field.classList.remove('valid');
           return false;
         } else {
           field.classList.add('valid');
@@ -1159,7 +1468,7 @@
         } else {
           emailGroup.classList.add('valid');
           hint.classList.add('success');
-          hint.textContent = '✓ Valid email format';
+          hint.innerHTML = '<span class="success-checkmark">✓</span> Valid email format';
           return true;
         }
       } else if (value === '') {
@@ -1203,7 +1512,6 @@
 
     function updateEmail() {
       const emailUsername = document.getElementById('emailUsername');
-      // Prevent @ symbol in email username
       emailUsername.value = emailUsername.value.replace(/@/g, '');
       validateField(emailUsername);
       updateCard();
@@ -1213,12 +1521,10 @@
     function formatPhone(input) {
       let value = input.value.replace(/\D/g, '');
       
-      // Remove 92 if user types it
       if (value.startsWith('92')) {
         value = value.substring(2);
       }
       
-      // Format: +92 (XX) XXXXX-XXXX
       let formatted = '+92';
       if (value.length > 0) {
         formatted += ' (' + value.substring(0, 2);
@@ -1267,7 +1573,7 @@
         counter.textContent = 'Format: +92 3xx xxxxxxx';
         counter.classList.remove('warning', 'success');
       } else if (digitCount === 10) {
-        counter.textContent = `✓ Complete (10 digits)`;
+        counter.innerHTML = '<span class="success-checkmark">✓</span> Complete (10 digits)';
         counter.classList.remove('warning');
         counter.classList.add('success');
       } else {
@@ -1282,7 +1588,6 @@
     }
 
     function validateAlphanumeric(input) {
-      // Allow only letters and numbers for CRC code
       input.value = input.value.replace(/[^a-zA-Z0-9]/g, '').toUpperCase();
     }
 
@@ -1295,10 +1600,12 @@
       
       if (cardType === 'conventional') {
         convCard.style.display = 'block';
+        convCard.style.animation = 'scaleIn 0.5s ease-out';
         islCard.style.display = 'none';
       } else {
         convCard.style.display = 'none';
         islCard.style.display = 'block';
+        islCard.style.animation = 'scaleIn 0.5s ease-out';
       }
       
       updateCard();
@@ -1315,7 +1622,6 @@
       const emailUsername = document.getElementById('emailUsername').value;
       const email = emailUsername ? emailUsername + '@ubl.com.pk' : '';
 
-      // Format phone display - show Ext only if phoneExt has value
       const phoneDisplay = phoneExt ? `${phone} Ext: ${phoneExt}` : phone;
 
       if (currentTemplate === 'conventional') {
@@ -1500,13 +1806,11 @@
         document.getElementById('approvedBy').value = '';
         document.getElementById('approvedDesignation').value = '';
         
-        // Remove validation classes
         document.querySelectorAll('input, textarea, select').forEach(field => {
           field.classList.remove('valid');
         });
         document.getElementById('emailGroup').classList.remove('valid');
         
-        // Reset hints
         document.getElementById('mobileCounter').textContent = 'Format: +92 3xx xxxxxxx';
         document.getElementById('mobileCounter').classList.remove('warning', 'success');
         document.getElementById('emailHint').textContent = 'Use only letters, numbers, dots and hyphens (e.g. john.doe or m.khan)';
@@ -1602,7 +1906,6 @@ Submit to: stationery.requisition@ubl.com.pk
       }, 3000);
     }
 
-    // Initialize validation on page load
     window.addEventListener('load', () => {
       validateAllFields();
     });
